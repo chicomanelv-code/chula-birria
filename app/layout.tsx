@@ -8,14 +8,14 @@ import { CartProvider } from "./context/CartContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chula Birria | Sabor Mexicano en Cuenca",
-  description: "La mejor birria artesanal de Cuenca, Ecuador.",
+  title: "Chula Birria | Boutique Experience",
+  description: "Sabor tradicional con tecnología de vanguardia.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className={`${inter.className} bg-brand-black antialiased`}>
+      <body className={`${inter.className} bg-black antialiased text-white`}>
         <CartProvider>
           <Navbar />
           <CartSidebar />

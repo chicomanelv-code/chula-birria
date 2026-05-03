@@ -16,25 +16,25 @@ export default function Menu() {
   const { addToCart } = useCart();
 
   return (
-    <section id="menu" className="py-24 bg-brand-black relative z-10">
+    <section id="menu" className="py-24 bg-black relative z-10">
       <div className="container mx-auto px-6">
-        <h2 className="text-5xl md:text-7xl text-white font-black uppercase italic mb-16 text-center">
-          Nuestro <span className="text-brand-red">Menú</span>
+        <h2 className="text-5xl md:text-7xl font-black uppercase italic mb-16 text-center">
+          Nuestro <span className="text-red-600">Menú</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {menuItems.map((item) => (
-            <div key={item.id} className="group bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-red/50 transition-all duration-500 shadow-2xl">
+            <div key={item.id} className="group bg-zinc-900 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-red-600/50 transition-all duration-500 shadow-2xl">
               <div className="relative aspect-square overflow-hidden">
                 <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
               </div>
-              <div className="p-8 flex justify-between items-center bg-zinc-900/50 backdrop-blur-md">
+              <div className="p-8 flex justify-between items-center bg-zinc-950/80 backdrop-blur-md">
                 <div className="flex flex-col">
                   <h3 className="text-white text-xl font-bold uppercase">{item.name}</h3>
-                  <p className="text-brand-red font-black text-2xl mt-2">${item.price.toFixed(2)}</p>
+                  <p className="text-red-600 font-black text-2xl mt-2">${item.price.toFixed(2)}</p>
                 </div>
                 <button
                   onClick={(e) => { e.preventDefault(); addToCart(item); }}
-                  className="relative z-30 h-14 w-14 flex items-center justify-center bg-brand-red text-white rounded-2xl shadow-xl active:scale-90 transition-all"
+                  className="relative z-30 h-14 w-14 flex items-center justify-center bg-red-600 text-white rounded-2xl shadow-[0_10px_20px_rgba(220,38,38,0.4)] active:scale-90 transition-all"
                 >
                   <Plus size={28} strokeWidth={3} />
                 </button>
