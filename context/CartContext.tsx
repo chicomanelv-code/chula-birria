@@ -25,7 +25,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
 
-  // Recalcular el total cada vez que cambian los items
   useEffect(() => {
     const total = cartItems.reduce((acc, item) => acc + item.price, 0);
     setCartTotal(total);
@@ -33,7 +32,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = (item: CartItem) => {
     setCartItems((prev) => [...prev, item]);
-    setIsCartOpen(true); // Abre el carrito automáticamente al añadir
+    setIsCartOpen(true); 
   };
 
   const removeFromCart = (id: number) => {
@@ -41,14 +40,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      removeFromCart, 
-      isCartOpen, 
-      setIsCartOpen, 
-      cartTotal 
-    }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, isCartOpen, setIsCartOpen, cartTotal }}>
       {children}
     </CartContext.Provider>
   );

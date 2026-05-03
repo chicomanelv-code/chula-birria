@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${inter.className} bg-brand-black antialiased`}>
-        {/* El CartProvider permite que el Menú y el Carrito hablen entre sí */}
+        {/* Sin este envoltorio, los botones de añadir al carrito darán error */}
         <CartProvider>
           <Navbar />
           <CartSidebar />
