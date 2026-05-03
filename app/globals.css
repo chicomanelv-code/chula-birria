@@ -1,19 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,73 +23,37 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-/* app/globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  cursor: none; /* Oculta el puntero estándar en toda la web */
-}
-
-a, button, .interactive {
-  cursor: none; /* Asegura que en elementos interactivos tampoco aparezca */
-}
-
-/* Mejora la suavidad del renderizado de texto */
-body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: auto !important;
 }
 
-/* app/globals.css */
 @layer utilities {
   .text-mask-video {
-    /* Esto permite que el video se vea a través del texto */
-    mix-blend-mode: screen; 
+    mix-blend-mode: screen;
     background-color: white;
     color: black;
   }
-  
   .perspective-1000 {
     perspective: 1000px;
   }
 }
 
-/* Selección de texto personalizada para que combine con la marca */
 ::selection {
-  background: #D32F2F; /* Rojo Chile */
+  background: #D32F2F;
   color: #1A1A1A;
 }
 
-/* app/globals.css */
-
-/* Si usas un componente de cursor personalizado, 
-   asegúrate de que tenga una clase como .custom-cursor */
 .custom-cursor {
   pointer-events: none;
   position: fixed;
-  z-index: 9999; /* El valor más alto posible */
-  mix-blend-mode: difference; /* Estilo boutique opcional */
+  z-index: 9999;
+  mix-blend-mode: difference;
 }
 
-/* Forzar que el puntero sea visible en elementos interactivos si se bugea */
-nav, .cart-sidebar, button, a {
-  cursor: pointer !important;
-}
-
-/* app/globals.css */
-
-/* Si tienes un componente de cursor personalizado, fuerza su capa al máximo */
 .custom-cursor-element {
   z-index: 9999 !important;
   pointer-events: none;
-}
-
-/* Asegura que el puntero nativo sea visible si no usas uno personalizado */
-html, body {
-  cursor: auto !important;
 }
 
 nav, button, a, .cart-sidebar {
