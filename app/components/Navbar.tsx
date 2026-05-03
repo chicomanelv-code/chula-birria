@@ -3,12 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
+import { useCart } from "../context/CartContext"; // Ruta corregida usando el alias
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { setIsCartOpen, cartItems } = useCart();
 
-  // Bloquear el scroll del cuerpo cuando el menú móvil está abierto
+  const totalItems = cartItems.length;
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -41,7 +44,7 @@ export default function Navbar() {
     <nav className="fixed w-full z-[150] bg-black/90 backdrop-blur-xl border-b border-white/5">
       <div className="container mx-auto px-6 py-5 flex justify-between items-center">
         
-        {/* LOGO: Usando la ruta .webp confirmada en tu estructura de archivos */}
+        {/* LOGO */}
         <Link href="/" className="relative w-28 h-10 block z-[160]">
           <Image 
             src="/images/logo.webp" 
@@ -52,26 +55,55 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* MENÚ DESKTOP */}
-        <div className="hidden lg:flex gap-10">
+        {/* MENÚ DESKTOP + CARRITO DESKTOP */}
+        <div className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               href={link.href} 
-              className="text-white/50 text-[10px] uppercase tracking-[0.4em] hover:text-brand-red transition-all duration-300"
+              className="text-white/50 text-[10px] uppercase tracking-[0.4em] hover:text-white transition-all duration-300"
             >
               {link.name}
             </Link>
           ))}
+
+          {/* Botón Carrito Desktop */}
+          <button 
+            onClick={() => setIsCartOpen(true)}
+            className="relative text-white/50 hover:text-white transition-colors ml-4"
+          >
+            <ShoppingCart size={20} strokeWidth={1.5} />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* BOTÓN HAMBURGUESA (Solo móvil) */}
-        <button 
-          onClick={() => setIsOpen(true)} 
-          className="lg:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors"
-        >
-          <Menu size={28} />
-        </button>
+        {/* CONTROLES MÓVIL (Carrito + Hamburguesa) */}
+        <div className="flex items-center gap-4 lg:hidden">
+          {/* Botón Carrito Móvil */}
+          <button 
+            onClick={() => setIsCartOpen(true)}
+            className="relative text-white p-2"
+          >
+            <ShoppingCart size={24} strokeWidth={1.5} />
+            {totalItems > 0 && (
+              <span className="absolute top-0 right-0 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
+
+          {/* Botón Hamburguesa */}
+          <button 
+            onClick={() => setIsOpen(true)} 
+            className="text-white p-2 hover:bg-white/5 rounded-full transition-colors"
+          >
+            <Menu size={28} />
+          </button>
+        </div>
       </div>
 
       {/* OVERLAY DEL SIDEBAR */}
@@ -83,21 +115,19 @@ export default function Navbar() {
       {/* SIDEBAR MÓVIL */}
       <div className={`fixed top-0 right-0 h-full w-[80%] max-w-sm bg-black border-l border-white/10 z-[200] transform transition-transform duration-500 ease-out lg:hidden ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-8 flex flex-col h-full">
-          {/* Botón Cerrar */}
           <div className="flex justify-end mb-12">
             <button onClick={() => setIsOpen(false)} className="text-white p-2">
               <X size={32} />
             </button>
           </div>
 
-          {/* Links del Sidebar */}
           <div className="flex flex-col gap-8">
             {navLinks.map((link) => (
               <Link 
                 key={link.name} 
                 href={link.href} 
                 onClick={() => setIsOpen(false)} 
-                className="text-white text-4xl font-black uppercase italic tracking-tighter hover:text-brand-red transition-colors"
+                className="text-white text-4xl font-black uppercase italic tracking-tighter hover:text-white transition-colors"
               >
                 {link.name}
               </Link>
