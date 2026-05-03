@@ -1,75 +1,78 @@
 "use client";
 
+import React from "react";
+import { X, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useRouter } from "next/navigation"; // Hook para navegación
-import { Playfair_Display } from "next/font/google";
-import { X, ShoppingBag } from "lucide-react";
-
-const playfair = Playfair_Display({ subsets: ["latin"] });
 
 export default function CartSidebar() {
-  const { cart, totalPrice, removeFromCart, clearCart } = useCart();
-  const router = useRouter();
-
-  const sendOrder = () => {
-    if (cart.length === 0) return;
-
-    // Estructuramos el mensaje para WhatsApp
-    const itemsText = cart
-      .map((item) => `- ${item.quantity}x ${item.name} ($${item.price})`)
-      .join("%0A");
-    
-    const message = `¡Hola Chula Birria! 👋 Me gustaría hacer este pedido:%0A%0A${itemsText}%0A%0ATotal: $${totalPrice.toFixed(2)}`;
-    
-    // 1. Abrimos WhatsApp en pestaña nueva
-    window.open(`https://wa.me/593983760304?text=${message}`, "_blank");
-    
-    // 2. Limpiamos el carrito
-    clearCart();
-
-    // 3. Redirigimos a la página de éxito
-    router.push("/gracias");
-  };
-
-  if (cart.length === 0) return null;
+  const { isCartOpen, setIsCartOpen, cartItems, removeFromCart, cartTotal } = useCart();
 
   return (
-    <div className="fixed bottom-8 right-8 z-[100] bg-white p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] w-80 border border-gray-100 flex flex-col">
-      <div className="flex items-center gap-3 mb-6">
-        <ShoppingBag className="text-brand-red w-5 h-5" />
-        <h4 className={`${playfair.className} text-2xl text-black font-bold`}>Tu Pedido</h4>
-      </div>
-      
-      <div className="max-h-60 overflow-y-auto mb-6 pr-2 custom-scrollbar">
-        {cart.map((item) => (
-          <div key={item.id} className="flex justify-between items-center mb-4 text-[11px] text-black/70 border-b border-gray-50 pb-3">
-            <div className="flex flex-col">
-              <span className="font-bold text-black uppercase tracking-wider">{item.name}</span>
-              <span>Cant: {item.quantity}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="font-bold text-black">${item.price}</span>
-              <button onClick={() => removeFromCart(item.id)} className="text-brand-red hover:scale-125 transition-transform">
-                <X size={14} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <>
+      {/* Fondo oscuro con desenfoque */}
+      <div 
+        className={`fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-500 z-[240] ${isCartOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        onClick={() => setIsCartOpen(false)}
+      />
 
-      <div className="mt-auto border-t border-gray-100 pt-5">
-        <div className="flex justify-between font-black text-black text-xl mb-6">
-          <span>Total:</span>
-          <span>${totalPrice.toFixed(2)}</span>
-        </div>
+      {/* Modal flotante centrado */}
+      <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-lg bg-white rounded-[2.5rem] z-[250] overflow-hidden transform transition-all duration-500 shadow-2xl ${isCartOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"}`}>
         
-        <button 
-          onClick={sendOrder}
-          className="w-full bg-[#E31D1C] text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.25em] shadow-xl shadow-red-100 hover:bg-black transition-all duration-500 active:scale-95"
-        >
-          Finalizar Pedido
-        </button>
+        <div className="p-6 md:p-8 flex flex-col max-h-[85vh]">
+          
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-brand-red/10 p-3 rounded-2xl">
+                <ShoppingBag className="text-brand-red" size={24} />
+              </div>
+              <h2 className="text-zinc-900 text-2xl md:text-3xl font-black uppercase italic">Tu Pedido</h2>
+            </div>
+            <button onClick={() => setIsCartOpen(false)} className="text-zinc-400 hover:text-brand-red p-2 transition-colors">
+              <X size={32} />
+            </button>
+          </div>
+
+          {/* LISTA CON SCROLL INTERNO: Esto evita que el modal crezca infinitamente */}
+          <div className="flex-grow overflow-y-auto space-y-4 pr-2 mb-6 scrollbar-hide" style={{ maxHeight: '40vh' }}>
+            {cartItems.length === 0 ? (
+              <div className="text-center py-10">
+                <p className="text-zinc-400 uppercase tracking-widest text-[10px]">Tu carrito está vacío</p>
+              </div>
+            ) : (
+              cartItems.map((item) => (
+                <div key={item.id} className="flex justify-between items-center bg-zinc-50 p-4 rounded-3xl border border-zinc-100">
+                  <div className="flex flex-col">
+                    <h4 className="text-zinc-900 font-bold uppercase text-[12px]">{item.name}</h4>
+                    <span className="text-zinc-400 text-[10px] uppercase">Cant: 1</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <p className="text-zinc-900 font-black text-md">${item.price.toFixed(2)}</p>
+                    <button onClick={() => removeFromCart(item.id)} className="text-zinc-300 hover:text-brand-red transition-colors">
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Footer fijo del modal */}
+          <div className="border-t border-zinc-100 pt-6">
+            <div className="flex justify-between items-end mb-6 px-2">
+              <span className="text-zinc-400 uppercase text-[10px] tracking-[0.2em] font-bold">Total</span>
+              <span className="text-zinc-900 text-3xl font-black">${cartTotal.toFixed(2)}</span>
+            </div>
+            
+            <button 
+              disabled={cartItems.length === 0}
+              className="w-full bg-brand-red text-white py-5 rounded-2xl font-black uppercase italic tracking-widest hover:bg-zinc-900 transition-all duration-300 shadow-xl shadow-brand-red/20 active:scale-95 disabled:opacity-30 disabled:grayscale"
+            >
+              Finalizar Pedido
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
