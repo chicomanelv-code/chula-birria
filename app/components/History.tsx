@@ -22,12 +22,11 @@ export default function History() {
   useGSAP(() => {
     let mm = gsap.matchMedia();
 
-    // --- CONFIGURACIÓN PARA ESCRITORIO (Horizontal) ---
+    // --- ESCRITORIO (Desplazamiento Horizontal) ---
     mm.add("(min-width: 768px)", () => {
       const panels = gsap.utils.toArray(".history-panel");
       const bgs = gsap.utils.toArray(".parallax-bg");
 
-      // Animación principal de scroll horizontal
       const scrollTween = gsap.to(panels, {
         xPercent: -100 * (panels.length - 1),
         ease: "none",
@@ -35,12 +34,10 @@ export default function History() {
           trigger: containerRef.current,
           pin: true,
           scrub: 1,
-          // El final depende del ancho real del contenido horizontal
-          end: () => "+=" + (wrapperRef.current?.scrollWidth || "3000"),
+          end: () => "+=" + (wrapperRef.current?.offsetWidth || 3000),
         }
       });
 
-      // Efecto Parallax en los fondos
       bgs.forEach((bg: any) => {
         gsap.set(bg, { x: "-10vw" });
         gsap.to(bg, {
@@ -56,43 +53,55 @@ export default function History() {
         });
       });
 
-      // Animación de aparición de textos (Stagger)
       panels.forEach((panel: any) => {
-        gsap.from(panel.querySelectorAll(".animate-up"), {
-          y: 50,
-          opacity: 0,
-          duration: 1,
-          stagger: 0.2,
-          scrollTrigger: {
-            trigger: panel,
-            containerAnimation: scrollTween,
-            start: "left center",
-            toggleActions: "play none none reverse"
+        gsap.fromTo(panel.querySelectorAll(".animate-up"), 
+          { y: 50, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+              trigger: panel,
+              containerAnimation: scrollTween,
+              start: "left center",
+              toggleActions: "play none none reverse"
+            }
           }
-        });
+        );
       });
     });
 
-    // --- CONFIGURACIÓN PARA MÓVIL (Vertical) ---
+    // --- MÓVIL (Desplazamiento Vertical Estándar) ---
     mm.add("(max-width: 767px)", () => {
       const panels = gsap.utils.toArray(".history-panel");
       
       panels.forEach((panel: any) => {
-        // Animamos los elementos para que aparezcan conforme el usuario baja
-        gsap.from(panel.querySelectorAll(".animate-up"), {
-          y: 40,
-          opacity: 0,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: panel,
-            start: "top 80%", // Se activa cuando el panel está al 80% de la pantalla
-            toggleActions: "play none none reverse"
+        // Forzamos la animación de entrada vertical
+        gsap.fromTo(panel.querySelectorAll(".animate-up"), 
+          { 
+            y: 60, 
+            opacity: 0 
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            stagger: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: panel,
+              start: "top 80%", // Se dispara cuando el panel entra al 80% de la pantalla
+              toggleActions: "play none none reverse",
+              invalidateOnRefresh: true, // Recalcula si el tamaño cambia
+            }
           }
-        });
+        );
       });
     });
+
+    // CRUCIAL: Forzamos a ScrollTrigger a reconocer las nuevas alturas en Cuenca y en el mundo
+    ScrollTrigger.refresh();
 
     return () => mm.revert(); 
 
@@ -104,36 +113,31 @@ export default function History() {
       id="historia" 
       className="relative w-full bg-brand-black overflow-hidden"
     >
-      {/* 
-          Contenedor Wrapper: 
-          - Móvil: flex-col (vertical), ancho normal.
-          - Desktop: flex-row (horizontal), ancho de 300vw.
-      */}
       <div 
         ref={wrapperRef} 
         className="flex flex-col md:flex-row w-full md:w-[300vw] h-auto md:h-screen"
       >
         
-        {/* PANEL 1: El Origen */}
-        <div className="history-panel w-full md:w-screen h-screen flex flex-col justify-center px-6 md:px-32 relative overflow-hidden border-b border-white/5 md:border-none">
+        {/* PANEL 1 */}
+        <div className="history-panel w-full md:w-screen h-[100svh] flex flex-col justify-center px-6 md:px-32 relative overflow-hidden border-b border-white/5 md:border-none">
           <div className="parallax-bg absolute top-0 left-0 h-full w-full md:w-[120vw] z-0">
             <div className="absolute inset-0 bg-black/60 z-10"></div>
             <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-black via-transparent to-brand-black z-20"></div>
-            <Image src="/images/historia-1.webp" alt="Origen" fill className="object-cover" />
+            <Image src="/images/historia-1.webp" alt="Origen" fill className="object-cover" priority />
           </div>
           
           <div className="max-w-2xl z-30 relative">
-            <h2 className={`${playfair.className} text-5xl md:text-7xl text-white mb-6 animate-up`}>
+            <h2 className={`${playfair.className} text-5xl md:text-7xl text-white mb-6 animate-up opacity-0`}>
               Nuestro <span className="italic text-white/70">Origen</span>
             </h2>
-            <p className="text-base md:text-lg text-white/70 leading-relaxed animate-up">
-              Un legado ancestral que nace del respeto por la tierra y la pasión por los sabores intensos. La birria es una herencia pasada de generación en generación que hemos traído a Cuenca.
+            <p className="text-base md:text-lg text-white/70 leading-relaxed animate-up opacity-0">
+              Un legado ancestral que nace del respeto por la tierra y la pasión por los sabores intensos. La birria es una herencia que hemos traído al corazón de Cuenca.
             </p>
           </div>
         </div>
 
-        {/* PANEL 2: Los Ingredientes */}
-        <div className="history-panel w-full md:w-screen h-screen flex flex-col justify-center items-center px-6 md:px-32 relative overflow-hidden border-b border-white/5 md:border-none">
+        {/* PANEL 2 */}
+        <div className="history-panel w-full md:w-screen h-[100svh] flex flex-col justify-center items-center px-6 md:px-32 relative overflow-hidden border-b border-white/5 md:border-none">
           <div className="parallax-bg absolute top-0 left-0 h-full w-full md:w-[120vw] z-0">
             <div className="absolute inset-0 bg-black/60 z-10"></div>
             <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-black via-transparent to-brand-black z-20"></div>
@@ -141,32 +145,31 @@ export default function History() {
           </div>
 
           <div className="max-w-2xl text-center z-30 relative">
-            <h2 className={`${playfair.className} text-5xl md:text-7xl text-white mb-6 animate-up`}>
+            <h2 className={`${playfair.className} text-5xl md:text-7xl text-white mb-6 animate-up opacity-0`}>
               Selección de <span className="italic text-white/70">Chiles</span>
             </h2>
-            <p className="text-base md:text-lg text-white/70 leading-relaxed animate-up">
-              La magia comienza con nuestra meticulosa selección de chiles secos y especias frescas. Cada ingrediente es escogido a mano para garantizar el equilibrio perfecto.
+            <p className="text-base md:text-lg text-white/70 leading-relaxed animate-up opacity-0">
+              Meticulosa selección de chiles secos y especias frescas. Cada ingrediente garantiza el equilibrio perfecto entre picor y aroma.
             </p>
           </div>
         </div>
 
-        {/* PANEL 3: La Cocción Lenta */}
-        <div className="history-panel w-full md:w-screen h-screen flex flex-col justify-center items-end px-6 md:px-32 text-right relative overflow-hidden">
+        {/* PANEL 3 */}
+        <div className="history-panel w-full md:w-screen h-[100svh] flex flex-col justify-center items-end px-6 md:px-32 text-right relative overflow-hidden">
           <div className="parallax-bg absolute top-0 left-0 h-full w-full md:w-[120vw] z-0">
             <div className="absolute inset-0 bg-black/60 z-10"></div>
             <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-brand-black via-transparent to-brand-black z-20"></div>
-            {/* Video de fondo */}
             <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-50 md:opacity-100">
               <source src="/videos/coccion-lenta.mp4" type="video/mp4" />
             </video>
           </div>
 
           <div className="max-w-2xl z-30 relative">
-            <h2 className={`${playfair.className} text-5xl md:text-7xl text-white mb-6 animate-up`}>
+            <h2 className={`${playfair.className} text-5xl md:text-7xl text-white mb-6 animate-up opacity-0`}>
               Cocción <span className="italic text-white/70">Lenta</span>
             </h2>
-            <p className="text-base md:text-lg text-white/70 leading-relaxed animate-up">
-              El tiempo es nuestro ingrediente secreto. Horas de cocción lenta aseguran que cada hebra de carne se deshaga en tu boca, absorbiendo nuestro consomé artesanal.
+            <p className="text-base md:text-lg text-white/70 leading-relaxed animate-up opacity-0">
+              Horas de cocción lenta a fuego bajo en ollas tradicionales aseguran que cada hebra de carne se deshaga en tu boca.
             </p>
           </div>
         </div>
