@@ -1,69 +1,83 @@
-# Chula Birria - Boutique Web Experience
+¡Claro que sí! Aquí tienes un README.md profesional, estructurado y listo para presentar el proyecto Chula Birria con el nivel técnico y estético que hemos alcanzado.
 
-Este es un proyecto de desarrollo web de alto rendimiento creado con **Next.js** para el restaurante **Chula Birria** en Cuenca, Ecuador. El sitio ofrece una experiencia inmersiva con animaciones avanzadas, gestión de pedidos en tiempo real y una interfaz "Dark Mode" elegante.
+🌮 Chula Birria | Boutique Digital Experience
+Chula Birria es una plataforma web de alta gama diseñada para redefinir la presencia digital de la cocina tradicional mexicana en el corazón de Cuenca, Ecuador. Este proyecto combina una estética boutique minimalista con una ingeniería de animaciones avanzada para ofrecer una experiencia de usuario inmersiva y cinematográfica.
 
-## 🚀 Tecnologías Utilizadas
+🚀 Pilares Técnicos
+El sitio ha sido desarrollado bajo un stack moderno enfocado en el rendimiento, la escalabilidad y el impacto visual:
 
-*   **Framework:** [Next.js 16.2.4 (App Router)](https://nextjs.org/)
-*   **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
-*   **Animaciones:** [GSAP (GreenSock Animation Platform)](https://greensock.com/gsap/)
-*   **Iconografía:** [Lucide React](https://lucide.dev/)
-*   **Tipografía:** Google Fonts (Playfair Display)
+Framework: Next.js (App Router) para una navegación optimizada y SEO dinámico.
 
-## 📦 Instalación y Configuración
+Estilos: Tailwind CSS utilizando una paleta de colores personalizada (brand-black, brand-red).
 
-Sigue estos pasos para ejecutar el código en tu entorno local (WSL/Ubuntu):
+Animaciones: GSAP + ScrollTrigger para la gestión de scroll horizontal y efectos de revelado.
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone https://github.com/tu-usuario/chula-birria.git
-   cd chula-birria
+Multimedia: Optimización de activos en formato WebP y MP4 con carga prioritaria.
+
+Despliegue: Vercel con integración continua.
+
+🛠️ Características Principales
+1. Fake Horizontal Scroll (Pinned Experience)
+Implementación de un sistema de desplazamiento horizontal bloqueado que funciona tanto en Desktop como en Mobile.
+
+Técnica: Uso de pin: true y anticipatePin: 1 para garantizar estabilidad en dispositivos móviles.
+
+Responsividad: Adaptación dinámica mediante 100dvh y touch-action: pan-y para una interacción fluida con el dedo.
+
+2. SEO & Datos Estructurados
+Inyección de JSON-LD para mejorar la visibilidad en motores de búsqueda, permitiendo que Google identifique el sitio como un negocio de restauración con datos precisos de ubicación, menú y contacto.
+
+3. Interfaz Boutique
+Navegación con Sidebar deslizable en móviles para mantener la limpieza visual.
+
+Tipografía Playfair Display para títulos, aportando un aire de elegancia y herencia.
+
+Integración de video en alta definición con técnicas de lazy-loading para no penalizar el Core Web Vitals.
+
+📦 Instalación y Desarrollo
+Si deseas ejecutar este proyecto localmente:
+
+Clonar el repositorio:
+
+Bash
+
+git clone https://github.com/tu-usuario/chula-birria.git
 Instalar dependencias:
+(Debido a la migración a React 19, se recomienda el uso de legacy peer deps si existen conflictos con librerías de terceros)
 
 Bash
 
-npm install
-Configurar activos multimedia:
-Asegúrate de contar con los siguientes archivos en la carpeta /public:
-
-/public/logo.png: Logo principal de la marca.
-
-/public/videos/food.mp4: Video de fondo para la sección de contacto.
-
-/public/og-image.jpg: Imagen para previsualización en redes sociales.
-
-Ejecutar el servidor de desarrollo:
+npm install --legacy-peer-deps
+Iniciar el servidor de desarrollo:
 
 Bash
 
-npm run dev
-La aplicación estará disponible en http://localhost:3000.
+    npm run dev
+    ```
 
-🛠️ Estructura del Proyecto
-/app: Contiene las rutas y páginas principales (page.tsx, layout.tsx, /gracias).
+4.  **Construcción para producción:**
+    ```bash
+    npm run build
+    ```
 
-/components: Componentes modulares de React (Navbar, Menu, Contact, MapSection, etc.).
+---
 
-/context: Lógica de estado global para el carrito de compras (CartContext.tsx).
+## 📂 Estructura de Archivos Clave
 
-/public: Archivos estáticos como imágenes, videos y fuentes locales.
+*   `/app/layout.tsx`: Configuración global y esquemas de SEO.
+*   `/app/components/Navbar.tsx`: Lógica de navegación y bloqueo de scroll.
+*   `/app/components/History.tsx`: Motor de animaciones GSAP y scroll horizontal.
+*   `/public/images/`: Activos visuales optimizados en WebP.
+*   `/public/videos/`: Clips de video optimizados para fondo y narrativa.
 
-✨ Características Principales
-Menú Interactivo: Filtrado y selección de productos con animaciones de revelado.
+---
 
-Carrito de Compras: Persistencia de datos y cálculo automático de totales.
+## 📝 Licencia
 
-Integración con WhatsApp: Envío de pedidos y reservas estructuradas directamente al comercio.
+Este proyecto es propiedad de **Chula Birria**. Todos los derechos de branding y contenido visual están reservados.
 
-Mapa Personalizado: Integración de Google Maps con filtros CSS para modo oscuro boutique.
+---
 
-Diseño Responsivo: Optimizado para dispositivos móviles y escritorio.
+**Desarrollado con pasión por la gastronomía y el código limpio.**
 
-📝 Notas de Desarrollo
-GSAP ScrollTrigger: Se utiliza para activar animaciones basadas en el desplazamiento del usuario.
-
-Next.js Image: Optimización automática de imágenes para mejorar el Core Web Vitals.
-
-Boutique UI: Uso de filtros de inversión y escala de grises para mantener la coherencia estética de la marca.
-
-Desarrollado por Francisco Rodriguez - 2026
+---
