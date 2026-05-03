@@ -1,8 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
+import React, { createContext, useContext, useState, useMemo } from "react";
 
-// Definimos la interfaz para que TypeScript sepa qué es un "item"
 export interface CartItem {
   id: number;
   name: string;
