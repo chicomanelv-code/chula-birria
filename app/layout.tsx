@@ -1,14 +1,15 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
+import Navbar from "./components/Navbar";
+import CartSidebar from "./components/CartSidebar";
+import { CartProvider } from "./context/CartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chula Birria | Sabor Auténtico Mexicano",
-  description: "Disfruta de la mejor birria de res en Cuenca, Ecuador.",
+  title: "Chula Birria | Sabor Mexicano en Cuenca",
+  description: "La mejor birria artesanal de Cuenca, Ecuador. Tradición y fuego lento.",
 };
 
 export default function RootLayout({
@@ -17,11 +18,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // 1. Añadimos suppressHydrationWarning aquí para evitar errores por extensiones
-    <html lang="es" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="es" className="scroll-smooth">
+      <body className={`${inter.className} bg-brand-black antialiased`}>
+        {/* El CartProvider permite que el Menú y el Carrito hablen entre sí */}
         <CartProvider>
-          {children}
+          <Navbar />
+          <CartSidebar />
+          <main>{children}</main>
         </CartProvider>
       </body>
     </html>
