@@ -1,19 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* Configuración para omitir errores de TS/Lint en el despliegue */
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
-  // Turbopack a veces tiene conflictos con GSAP, desactivamos experimental si es necesario
-  experimental: {
-    turbo: {
-      // Configuraciones específicas si usas Turbopack
-    }
-  }
 };
 
 export default nextConfig;
